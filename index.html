@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithms Visualizer</title>
+    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+<body>
+<div class="container">
+    <form id="form" >
+        <div class="form-row pt-2">
+            <div class="form-group">
+                <label for="type">Algorithm</label>
+                <select onchange="onChangeAlgorithm()" id="type" class="form-control">
+                    <option value="0">Linear Search</option>
+                    <option value="1">Binary Search</option>
+                    <option value="2">Bubble Sort</option>
+                    <option value="3">Selection Sort</option>
+                  </select>
+            </div>
+            <div class="form-group">
+                <label for="dataSize">Data Set Size</label>
+                <input type="number" value="10" id="dataSize" class="form-control" placeholder="enter size">
+            </div>
+            <div class="form-group">
+                <label for="dataSize">Search Element</label>
+                <input type="number" value="1" id="searchElement" class="form-control" placeholder="enter number">
+            </div>
+            <div class="form-group m-4">
+               <button type="submit" class="btn btn-outline-primary">Start !</button>
+            </div>
+        </div>
+      </form>
+      <hr>
+    <div class="row">
+        <div class="col">
+            <!-- modify heading accordingly -->
+            <section id="heading" class="header"></section> 
+        </div>
+    </div>
+    <div class="row mt-4">
+        <section class="data-container"></section>
+    </div>
+</div>
+</body>
+<script src="src/main.js"></script>
+
+</html>
