@@ -11,11 +11,10 @@ function onFormSubmit(eve) {
     switch (selectedAlgorithm) {
         case "0":
             document.getElementById("heading").innerHTML = `Linear Search for ${searchElement}`;
-            linearSearch(searchElement);
+            onDoLinearSearch(dataSize,searchElement);
             break;
         case "1":
             document.getElementById("heading").innerHTML = `Binary Search for ${searchElement}`;
-
             binarySearch(searchElement);
             break;
         case "2":
@@ -45,18 +44,11 @@ function onDoSelectionSort(dataSize) {
     }
     selectionSort();
 }
-function onChangeAlgorithm(event) {
-    console.log(event);
-}
-
-function generateGraph(num = 10) {
-    if (num && typeof num !== "number") {
-        alert("First argument must be a typeof Number");
-        return;
-    }
+function generateGraph(num = 10, isSorted = false) {
     container.innerHTML ="";
+    let sortedValues = Array.from({length: num}, () => Math.floor(Math.random() * 100)).sort();
     for (let i = 0; i < num; i += 1) {
-        const value = Math.floor(Math.random() * 100);
+        const value = (isSorted) ? sortedValues[num] : Math.floor(Math.random() * 100);
         const block = document.createElement("div");
         block.classList.add("block");
         block.style.height = `${value * 3}px`;
@@ -156,5 +148,37 @@ function repaintAll(blocks) {
     });
 }
 
+async function onDoLinearSearch(dataSize, elementToFind) {
+    blocks = document.querySelectorAll(".block");
+    if (blocks.length !== +dataSize) {
+        generateGraph(+dataSize);
+    }
+    linearSearch(elementToFind);
 
+}
+async function linearSearch(elToFind) {
+    const delay = 100;
+    let blocks = document.querySelectorAll(".block");
+    let elementFound = false;
+    for (var i=0; i<blocks.length; i++) {
+        const value = Number(blocks[i].childNodes[0].innerHTML);
+        blocks[i].style.backgroundColor = "#FF4949";
+        await new Promise((resolve) => {
+            return setTimeout(() => {
+                resolve();
+            }, delay);
+        });
+        if (value == elToFind) {
+        elementFound = true;
+        blocks[i].style.backgroundColor = "#13CE66";
+        alert(`Element Found  😎 🎉!`)
+        return i;
+      }
+      blocks[i].style.backgroundColor = "#58B7FF";
+    } 
+if (!elementFound) {
+    alert(`Sorry ! couldn't find ${elToFind} 😕!
+    Try changing the search element`);
+}  
+}
 generateGraph();
