@@ -13,7 +13,7 @@ function onFormSubmit(eve) {
     const selectedAlgorithm = eve.target.elements[0].value;
     const dataSize = eve.target.elements[1].value;
     const searchElement = eve.target.elements[2].value;
-    executionDelay = eve.target.elements[3].value;
+    executionDelay = +eve.target.elements[3].value;
 
     switch (selectedAlgorithm) {
         case "0":
