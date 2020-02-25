@@ -1,29 +1,42 @@
 const container = document.querySelector(".data-container");
 const form = document.getElementById('form');
-const errorAlert = document.getElementById('errorAlert');
 var isSortedGlobal;
+var executionDelay = 100;
+var systemBusy = false;
 form.addEventListener('submit', onFormSubmit);
-
 function onFormSubmit(eve) {
     eve.preventDefault();
+    if(systemBusy) {
+        printLog("Please wait until I finish 😌");
+        return;
+    }
     const selectedAlgorithm = eve.target.elements[0].value;
     const dataSize = eve.target.elements[1].value;
     const searchElement = eve.target.elements[2].value;
+    executionDelay = eve.target.elements[3].value;
+
     switch (selectedAlgorithm) {
         case "0":
+            systemBusy = true;
             document.getElementById("heading").innerHTML = `Linear Search for ${searchElement}`;
+            printLog("Roger that! looking for " + searchElement + " 🧐");
             onDoLinearSearch(dataSize,searchElement);
             break;
         case "1":
+            systemBusy = true;
             document.getElementById("heading").innerHTML = `Binary Search for ${searchElement}`;
+            printLog("Roger that! looking for " + searchElement + " 🧐");
             onDoBinarySearch(dataSize,searchElement);
             break;
         case "2":
+            systemBusy = true;
             document.getElementById("heading").innerHTML = `Bubble Sort`;
+            printLog("Started Sorting 🤹‍♀️");
             onDoBubbleSort(dataSize);
             break;
         case "3":
             document.getElementById("heading").innerHTML = `Selection Sort`;
+            printLog("Started Sorting 🤹‍♀️");
             onDoSelectionSort(dataSize);
             break;
         default:
@@ -45,7 +58,7 @@ function onDoSelectionSort(dataSize) {
     }
     selectionSort();
 }
-function generateGraph(num = 10, isSorted = false) {
+function generateGraph(num = 20, isSorted = false) {
      isSortedGlobal = isSorted;
     container.innerHTML ="";
     var sortedValues = Array.from({length: num}, () => Math.floor(Math.random() * 100)).sort((a, b) => a - b);
@@ -82,6 +95,8 @@ function swap(el1, el2) {
 }
 
 async function bubbleSort(delay = 100) {
+    executionDelay = delay;
+    let start = performance.now();
     let blocks = document.querySelectorAll(".block");
     for (let i = 0; i < blocks.length - 1; i += 1) {
         for (let j = 0; j < blocks.length - i - 1; j += 1) {
@@ -104,8 +119,15 @@ async function bubbleSort(delay = 100) {
 
         blocks[blocks.length - i - 1].style.backgroundColor = "#13CE66";
     }
+    systemBusy = false;
+let end = performance.now();
+
+    printLog(`All done 🤹 in ${((end-start)/1000).toFixed(2)} sec 🥳`);
+
 }
 async function selectionSort(delay = 100) {
+    executionDelay = delay;
+    let start = performance.now();
     let blocks = document.querySelectorAll(".block");
     let len = blocks.length;
     for (let i = 0; i < len; i++) {
@@ -133,6 +155,10 @@ async function selectionSort(delay = 100) {
             await swap(blocks[min], blocks[i]);
         }
     }
+systemBusy = false;
+let end = performance.now();
+printLog(`All done 🤹 in ${((end-start)/1000).toFixed(2)} sec 🥳`);
+
 
 }
 
@@ -159,7 +185,6 @@ async function onDoLinearSearch(dataSize, elementToFind) {
 
 }
 async function linearSearch(elToFind) {
-    const delay = 100;
     let blocks = document.querySelectorAll(".block");
     let elementFound = false;
     for (var i=0; i<blocks.length; i++) {
@@ -168,20 +193,23 @@ async function linearSearch(elToFind) {
         await new Promise((resolve) => {
             return setTimeout(() => {
                 resolve();
-            }, delay);
+            }, executionDelay);
         });
         if (value == elToFind) {
         elementFound = true;
         blocks[i].style.backgroundColor = "#13CE66";
-        alert(`Element Found  😎 🎉!`);
+        printLog(`Element Found at index ${i} 😎 🎉`);
+        systemBusy = false;
         return i;
       }
       blocks[i].style.backgroundColor = "#58B7FF";
     } 
 if (!elementFound) {
-    alert(`Sorry ! couldn't find ${elToFind} 😕!
-    Try changing the search element`);
+
+        printLog(`Sorry ! couldn't find ${elToFind} 😕
+    Try changing the search element !`);
 }  
+systemBusy = false;
 }
 function onDoBinarySearch(dataSize, elementToFind) {
     blocks = document.querySelectorAll(".block");
@@ -192,7 +220,6 @@ function onDoBinarySearch(dataSize, elementToFind) {
 
 }
 async function binarySearch(elToFind) {
-    const delay = 400;
     let blocks = document.querySelectorAll(".block");
     repaintAll(blocks);
     let lowIndex = 0;
@@ -206,14 +233,16 @@ async function binarySearch(elToFind) {
         await new Promise((resolve) => {
             return setTimeout(() => {
                 resolve();
-            }, delay);
+            }, executionDelay);
         });
       if (value == elToFind) {
-          alert(`Element Found  😎 🎉!`);
+        printLog(`Element Found at index ${midIndex} 😎 🎉`);
           blocks[midIndex].style.backgroundColor = "#13CE66";
         if (blocks[highIndex] && highIndex !== midIndex)blocks[highIndex].style.backgroundColor = "#58B7FF";
         if (blocks[lowIndex] && lowIndex !== midIndex)blocks[lowIndex].style.backgroundColor = "#58B7FF";
+        systemBusy = false;
           return midIndex;
+
 
       } else if (value < elToFind) {
         if (blocks[highIndex])blocks[highIndex].style.backgroundColor = "#58B7FF";
@@ -229,8 +258,27 @@ async function binarySearch(elToFind) {
     }
     }
     repaintAll(blocks);
-    alert(`Sorry ! couldn't find ${elToFind} 😕!
-    Try changing the search element`); 
+    printLog(`Sorry ! couldn't find ${elToFind} 😕
+    Try changing the search element`);
+systemBusy = false;
+
     return null;
   }
 generateGraph();
+function printLog(text, clearAll = false) {
+    const logger = document.getElementById("logger");
+if (clearAll) {
+    logger.innerHTML ="";
+}
+var newNode = document.createElement('p');
+newNode.className = 'log-text';
+newNode.innerHTML = text;
+logger.appendChild(newNode);
+logger.scrollTop = logger.scrollHeight;
+}
+// 1. Information Panel
+// 2. Speed Control
+// 
+// Search highlight
+// code refractor for binary
+// implement quick sort
