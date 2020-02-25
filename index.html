@@ -23,11 +23,15 @@
             </div>
             <div class="form-group  col">
                 <label for="dataSize">Data Set Size</label>
-                <input type="number" value="10" id="dataSize" class="form-control" placeholder="enter size">
+                <input type="number" value="20" id="dataSize" class="form-control" placeholder="enter size">
             </div>
             <div class="form-group  col">
                 <label for="dataSize">Search Element</label>
                 <input type="number" value="1" id="searchElement" class="form-control" placeholder="enter number">
+            </div>
+            <div class="form-group  col">
+                <label for="dataSize">Delay(in ms)</label>
+                <input type="number" value="100" id="delay" class="form-control" placeholder="enter in ms">
             </div>
             <div class="form-group m-4  col">
                <button type="submit" class="btn btn-outline-primary">Start !</button>
@@ -42,7 +46,12 @@
         </div>
     </div>
     <div class="row mt-4">
-        <section class="data-container"></section>
+       <div class="col-3">
+            <div id="logger" class="fixedHeight logger"></div>
+       </div>
+<div class="col">
+    <section class="data-container"></section>
+</div>
     </div>
 </div>
 </body>

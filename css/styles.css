@@ -30,3 +30,27 @@
     width: 100%;
     text-align: center;
   }
+  .fixedHeight {
+    height: 229px;
+    max-height: 229px;
+    scroll-behavior: smooth;
+  }
+  .logger {
+    margin-top: 50%;
+    background-color: #696D7D;
+    color: #FCFBEC;
+    font-size: small;
+    border: 3px solid rgb(88, 183, 255);
+    border-radius: 6px;
+    overflow: auto;
+  }
+  #logger::-webkit-scrollbar {
+    width: 2px;
+} 
+  .log-text {
+    margin: 0;
+    padding-left: 3px;
+  }
+.container {
+    max-width: 88%;
+}
